@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Brian Ross</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f8f8f6;
+  --ink:#0f0f0e;
+  --mid:#555552;
+  --dim:#777773;
+  --border:#e0dfd8;
+  --soft:#eeede8;
+  --w:1060px;
+  --lw:520px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Geist',sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.5}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:42px;display:flex;align-items:center;justify-content:space-between;padding:0 2.2rem;background:rgba(248,248,246,.95);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Geist',sans-serif;font-size:.92rem;font-weight:400;color:var(--ink);text-decoration:none}
+.nav-r{display:flex;align-items:center;gap:1.6rem;list-style:none}
+.nav-r a{font-size:.76rem;color:var(--mid);text-decoration:none;transition:color .12s}
+.nav-r a:hover{color:var(--ink)}
+.nav-cta{background:var(--ink)!important;color:var(--bg)!important;padding:.28rem .88rem;border-radius:980px;font-size:.72rem!important}
+
+/* PAGE */
+.wrap{max-width:var(--w);margin:0 auto;padding:0 2.2rem}
+
+/* HERO */
+#hero{padding-top:64px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.hero-name{font-family:'Instrument Serif',serif;font-size:clamp(2rem,4.2vw,3.4rem);font-weight:400;line-height:1;letter-spacing:-.03em;margin-bottom:.6rem;white-space:nowrap}
+.hero-bio{font-size:.87rem;font-weight:300;color:var(--mid);line-height:1.65;max-width:none;white-space:nowrap;margin-bottom:1rem}
+
+/* Summary */
+.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:.9rem}
+.sum-col{padding:.65rem .9rem;border-right:1px solid var(--border);display:flex;align-items:center;gap:.6rem}
+.sum-col:last-child{border-right:none}
+.sum-logo{flex-shrink:0;width:28px;height:28px}
+.sum-logo svg{width:28px;height:28px}
+.sum-org{font-size:.68rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);margin-bottom:.1rem}
+.sum-role{font-size:.82rem;font-weight:400;color:var(--ink);line-height:1.2;margin-bottom:.08rem}
+.sum-date{font-family:'Geist Mono',monospace;font-size:.54rem;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.hero-links{display:flex;gap:.4rem}
+.lnk{font-size:.74rem;color:var(--mid);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .68rem;border:1px solid var(--border);border-radius:980px;transition:all .12s}
+.lnk:hover{border-color:var(--ink);color:var(--ink)}
+.lnk svg{width:11px;height:11px}
+
+/* SECTIONS */
+.sec{padding:26px 0;border-bottom:1px solid var(--border)}
+.sec:last-of-type{border-bottom:none}
+.sec-title{font-family:'Geist',sans-serif;font-size:1rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin-bottom:.85rem;padding-bottom:.4rem;border-bottom:1px solid var(--border)}
+
+/* ENTRY ROW */
+.erow{display:grid;grid-template-columns:var(--lw) 1fr;gap:2rem;align-items:start;padding:.85rem 0;border-bottom:1px solid var(--border)}
+.erow:last-child{border-bottom:none}
+
+/* side-by-side row */
+.erow-pair{display:grid;grid-template-columns:1fr 1fr;gap:0;border-bottom:1px solid var(--border)}
+.erow-pair .epane{padding:.85rem 1.1rem .85rem 0;border-right:1px solid var(--border)}
+.erow-pair .epane:last-child{border-right:none;padding-left:1.1rem;padding-right:0}
+
+/* kicker */
+.kicker{font-size:.7rem;color:var(--dim);margin-bottom:.15rem;letter-spacing:.01em;display:flex;align-items:baseline;gap:.5rem;flex-wrap:wrap}
+.kicker strong{font-weight:600;color:var(--ink);font-size:.78rem;display:inline;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+
+.etitle{font-size:.94rem;font-weight:500;letter-spacing:-.01em;line-height:1.2;margin-bottom:.2rem;color:var(--ink)}
+.etitle-sub{font-size:.91rem;font-weight:500;letter-spacing:-.01em;line-height:1.2;margin-bottom:.16rem;margin-top:.65rem;color:var(--ink)}
+.esub{font-size:.8rem;font-weight:300;color:var(--mid);line-height:1.6;margin-bottom:.38rem}
+.ebul{list-style:none;margin-bottom:.38rem;display:flex;flex-direction:column;gap:.16rem}
+.ebul li{font-size:.8rem;font-weight:300;line-height:1.56;padding-left:.82rem;position:relative;color:#333330}
+.ebul li::before{content:'';position:absolute;left:0;top:.57em;width:3px;height:3px;border-radius:50%;background:var(--dim)}
+
+/* diagram — compact 16:9 */
+.dbox{display:flex;flex-direction:column;gap:.25rem}
+.diagram{background:var(--soft);border:1px solid var(--border);border-radius:7px;overflow:hidden;aspect-ratio:16/9}
+.diagram.short{aspect-ratio:16/7}
+.diagram.tall{aspect-ratio:4/3}
+.diagram svg{width:100%;height:100%;display:block}
+.dlabel{font-family:'Geist Mono',monospace;font-size:.52rem;letter-spacing:.07em;text-transform:uppercase;color:var(--dim);text-align:right}
+
+/* skills */
+.sk-section{display:grid;grid-template-columns:130px 1fr;gap:.35rem 1.4rem;align-items:baseline;padding:.38rem 0;border-bottom:1px solid var(--border)}
+.sk-section:last-child{border-bottom:none}
+.sk-cat{font-family:'Geist Mono',monospace;font-size:.68rem;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.sk-list{font-size:.81rem;font-weight:300;color:var(--mid);line-height:1.65}
+
+/* skills tag layout */
+.sk-grid{display:flex;flex-direction:column;gap:1rem}
+.sk-row{display:flex;gap:1.2rem;align-items:flex-start}
+.sk-label{font-family:'Geist',sans-serif;font-size:.76rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);width:130px;flex-shrink:0;padding-top:.28rem}
+.sk-tags{display:flex;flex-wrap:wrap;gap:.32rem}
+.sk-tag{font-size:.72rem;font-weight:400;color:var(--ink);background:var(--soft);border:1px solid var(--border);border-radius:4px;padding:.18rem .52rem;line-height:1.4;white-space:nowrap}
+
+/* contact */
+.clinks{display:flex;flex-direction:column;gap:.32rem}
+.cl{display:inline-flex;align-items:center;gap:.42rem;font-size:.87rem;color:var(--ink);text-decoration:none;transition:color .12s}
+.cl:hover{color:var(--mid)}
+.cl svg{width:12px;height:12px;color:var(--dim)}
+
+footer{padding:.9rem 2.2rem;border-top:1px solid var(--border);display:flex;justify-content:space-between}
+footer span{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.07em;color:var(--dim)}
+
+/* reveal — visible by default, JS enhances with animation */
+.reveal{opacity:1;transform:none;transition:opacity .5s cubic-bezier(.16,1,.3,1),transform .5s cubic-bezier(.16,1,.3,1)}
+.js-reveal .reveal{opacity:0;transform:translateY(8px)}
+.js-reveal .reveal.in{opacity:1;transform:none}
+.d1{transition-delay:.05s}.d2{transition-delay:.1s}.d3{transition-delay:.14s}
+
+/* ANIMATIONS */
+@keyframes cp1{0%,100%{rx:11;ry:8}40%{rx:8;ry:10}}
+@keyframes cp2{0%,100%{rx:9;ry:6}35%{rx:6;ry:9}}
+@keyframes cp3{0%,100%{rx:12;ry:8}45%{rx:9;ry:11}}
+@keyframes dm1{0%{transform:translate(0,0)}40%{transform:translate(-3px,1px)}80%{transform:translate(-2px,-1px)}100%{transform:translate(0,0)}}
+@keyframes dm2{0%{transform:translate(0,0)}35%{transform:translate(2px,-2px)}75%{transform:translate(1px,1px)}100%{transform:translate(0,0)}}
+@keyframes pr1{0%,100%{transform:translateX(36px)}50%{transform:translateX(96px)}}
+@keyframes eg1{0%,100%{height:0;opacity:0}25%,85%{height:44px;opacity:.85}}
+@keyframes sc1{0%,100%{transform:translateY(-16px);opacity:0}20%,80%{opacity:.3}50%{transform:translateY(60px)}}
+@keyframes wave{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes sp1{0%,100%{opacity:.4}50%{opacity:.9}}
+@keyframes fb1{0%,100%{fill:#e8bfa0}40%,65%{fill:#b87060}}
+@keyframes sensorBlink{0%,100%{fill:#4488cc;opacity:.5}50%{fill:#88ccff;opacity:1}}
+@keyframes bloodFlow{0%{stroke-dashoffset:80}100%{stroke-dashoffset:0}}
+@keyframes heartbeat{0%,100%{transform:scale(1)}15%{transform:scale(1.04)}30%{transform:scale(1)}}
+@keyframes ecgPace{0%,100%{opacity:.25}50%{opacity:1}}
+@keyframes ekgScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes ledRed{0%,100%{opacity:.35;fill:#cc2222}50%{opacity:1;fill:#ff3333}}
+@keyframes ledGreen{0%,100%{opacity:.3;fill:#22aa44}50%{opacity:1;fill:#22ff66}}
+@keyframes screenPulse{0%,100%{opacity:.55}50%{opacity:1}}
+@keyframes crtScreenGlow{0%,100%{opacity:.7}40%{opacity:1}70%{opacity:.85}}
+
+@media(max-width:820px){
+  .erow,.erow-pair{grid-template-columns:1fr}
+  .erow-pair .epane{border-right:none;padding:.85rem 0}
+  .summary{grid-template-columns:1fr}
+  .sum-col{border-right:none;border-bottom:1px solid var(--border)}
+  .sum-col:last-child{border-bottom:none}
+  nav{padding:0 1.2rem}.wrap{padding:0 1.2rem}
+  footer{flex-direction:column;gap:.3rem;padding:.9rem 1.2rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="nav-logo">Brian Ross</a>
+  <ul class="nav-r">
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<div class="wrap">
+
+<!-- HERO -->
+<section id="hero">
+  <h1 class="hero-name reveal">Brian Ross</h1>
+  <p class="hero-bio reveal d1">Biomedical engineer improving healthcare outcomes through tissue, electrical, mechanical, and software engineering.</p>
+  <div class="summary reveal d2">
+    <!-- Stanford -->
+    <div class="sum-col">
+      <div class="sum-logo">
+        <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="4" fill="#8c1515"/>
+          <!-- Stanford tree simplified -->
+          <g transform="translate(14,14)" fill="white">
+            <polygon points="0,-8 -5,2 -2,2 -6,8 6,8 2,2 5,2" opacity=".9"/>
+            <rect x="-1.2" y="8" width="2.4" height="4" opacity=".85"/>
+          </g>
+        </svg>
+      </div>
+      <div class="sum-text">
+        <div class="sum-org">Stanford University</div>
+        <div class="sum-role">MS Bioengineering</div>
+        <div class="sum-date">2025–Present · Bao Group · Skylar-Scott Lab · GPA 4.06</div>
+      </div>
+    </div>
+    <!-- Abbott -->
+    <div class="sum-col">
+      <div class="sum-logo" style="display:flex;align-items:center;justify-content:center">
+        <img src="abbott_logo.webp" style="width:28px;height:28px;object-fit:contain" alt="Abbott"/>
+      </div>
+      <div class="sum-text">
+        <div class="sum-org">Abbott</div>
+        <div class="sum-role">Systems Engineer II</div>
+        <div class="sum-date">2021–2025 · Aveir · Assert IQ ICM</div>
+      </div>
+    </div>
+    <!-- Columbia -->
+    <div class="sum-col">
+      <div class="sum-logo">
+        <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+          <rect width="28" height="28" rx="4" fill="#003087"/>
+          <!-- Columbia crown — arched with cross finials like the real logo -->
+          <g transform="translate(14,15)" fill="white" opacity=".92">
+            <!-- base bar -->
+            <rect x="-8" y="5" width="16" height="2" rx=".5"/>
+            <!-- arch body — left arm, right arm, center arch -->
+            <path d="M-8,5 C-8,-2 -5,-6 0,-7 C5,-6 8,-2 8,5 L6,5 C6,0 4,-4 0,-5 C-4,-4 -6,0 -6,5 Z"/>
+            <!-- center cross finial top -->
+            <rect x="-1" y="-9" width="2" height="4" rx=".5"/>
+            <rect x="-2.5" y="-8" width="5" height="1.5" rx=".5"/>
+            <!-- left cross finial -->
+            <rect x="-8.5" y="-3" width="1.5" height="3" rx=".5"/>
+            <rect x="-9.5" y="-2" width="3.5" height="1.5" rx=".5"/>
+            <!-- right cross finial -->
+            <rect x="7" y="-3" width="1.5" height="3" rx=".5"/>
+            <rect x="6" y="-2" width="3.5" height="1.5" rx=".5"/>
+          </g>
+        </svg>
+      </div>
+      <div class="sum-text">
+        <div class="sum-org">Columbia University SEAS</div>
+        <div class="sum-role">BS Biomedical Engineering</div>
+        <div class="sum-date">Class of 2021 · Hillman Lab · GPA 3.84</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-links reveal d3">
+    <a href="mailto:bhross@stanford.edu" class="lnk"><svg viewBox="0 0 12 12" fill="none"><rect x=".5" y="2" width="11" height="8" rx="1" stroke="currentColor" stroke-width="1.1"/><path d="M.5 3.5l5.5 3.5 5.5-3.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>bhross@stanford.edu</a>
+    <a href="https://www.linkedin.com/in/brian-ross-bme/" target="_blank" class="lnk">
+      <svg viewBox="0 0 12 12" fill="none"><rect x=".5" y=".5" width="11" height="11" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M3 4.5v4M3 3v.5M5.5 8.5V6.5a1.5 1.5 0 013 0v2M5.5 4.5v4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+      LinkedIn
+    </a>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects" class="sec">
+<h2 class="sec-title reveal">Projects</h2>
+
+<!-- Skylar-Scott Lab -->
+<div class="erow reveal">
+  <div>
+    <p class="kicker"><strong>Skylar-Scott Lab, Stanford</strong>2025–Present</p>
+    <h3 class="etitle">Bioprinted Vascularized Cardiac Patches</h3>
+    <p class="esub">Researching bioprinting approaches for vascularized cardiac patches to treat heart failure and heart disease.</p>
+    <ul class="ebul">
+      <li>Building perfusable, multi-cell type cardiac patches and mini ventricles with hydrogel scaffolds and hiPSCs</li>
+      <li>Developed DeepLabCut pipeline to track and quantify contractions of cardiomyocyte tissues growing on cardiac patch</li>
+      <li>Developed tool to twist STLs to improve physiological accuracy of hydrogel scaffold</li>
+      <li>Designed 3D print path to replicate endocardium, mid-wall, and epicardium muscle fiber orientations</li>
+      <li>Optimized PEO/GelMA bioink and gel support bath materials for embedded bioprinting</li>
+      <li>Characterized patch with fluorescence microscopy</li>
+    </ul>
+  </div>
+  <div class="dbox">
+    <div class="diagram" style="display:flex;align-items:center;justify-content:center;overflow:hidden">
+      <svg viewBox="0 -20 300 204" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;display:block">
+        <defs>
+          <linearGradient id="bath-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f0aed6" stop-opacity=".75"/><stop offset="100%" stop-color="#d876bc" stop-opacity=".92"/></linearGradient>
+          <linearGradient id="noz-g" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c8dce8"/><stop offset="50%" stop-color="#eaf4fc"/><stop offset="100%" stop-color="#b4c8d8"/></linearGradient>
+          <filter id="bsh"><feDropShadow dx="1" dy="3" stdDeviation="5" flood-opacity=".13"/></filter>
+          <clipPath id="bathclip"><polygon points="44,84 244,84 268,60 68,60 68,164 268,164 268,60 244,84 244,164 44,164"/></clipPath>
+        </defs>
+        <rect width="360" height="204" fill="#f0efea"/>
+
+        <!-- ── BATH BOX isometric ──
+             Front face:  x=44..244, y=84..164
+             Back face:   x=68..268, y=60..164  (offset +24,−24)
+        -->
+        <!-- back face -->
+        <polygon points="68,60 268,60 268,164 68,164" fill="#cce0ea" opacity=".32"/>
+        <!-- left wall -->
+        <polygon points="44,84 68,60 68,164 44,164" fill="#bdd4e0" opacity=".48"/>
+        <!-- top rim isometric -->
+        <polygon points="44,84 244,84 268,60 68,60" fill="#daeef8" opacity=".58"/>
+        <!-- bath fill -->
+        <polygon points="44,100 244,100 268,76 68,76" fill="#f4c8e0" opacity=".52"/>
+        <polygon points="44,100 244,100 244,164 44,164" fill="url(#bath-g)"/>
+        <polygon points="244,100 268,76 268,164 244,164" fill="#d090c8" opacity=".38"/>
+        <!-- front outline -->
+        <polygon points="44,84 244,84 244,164 44,164" fill="none" stroke="#a4b8c4" stroke-width=".8" opacity=".38"/>
+        <!-- right wall -->
+        <polygon points="244,84 268,60 268,164 244,164" fill="#b0c4d0" opacity=".28"/>
+
+        <!-- ── BACK SCAFFOLD — attaches to left wall (x=68) and right wall (x=268) ──
+             Runs along the back face of the bath, uprights at back-left and back-right corners
+        -->
+        <!-- back-left upright at (68,60) going up to (68,20) -->
+        <rect x="65" y="18" width="6" height="44" rx="2.5" fill="#c4c0b8" opacity=".85"/>
+        <!-- back-right upright at (268,60) going up to (268,20) -->
+        <rect x="265" y="18" width="6" height="44" rx="2.5" fill="#bcb8b0" opacity=".85"/>
+        <!-- back top crossbar connecting back uprights -->
+        <rect x="63" y="16" width="210" height="6" rx="2" fill="#d0ccc4" opacity=".8"/>
+        <!-- back guide rod -->
+        <rect x="65" y="34" width="207" height="4" rx="1.5" fill="#c8c4bc" opacity=".7"/>
+        <!-- left side attachment bar (front-left to back-left) -->
+        <line x1="44" y1="84" x2="68" y2="60" stroke="#c4c0b8" stroke-width="3.5" stroke-linecap="round" opacity=".7"/>
+        <!-- right side attachment bar (front-right to back-right) -->
+        <line x1="244" y1="84" x2="268" y2="60" stroke="#bcb8b0" stroke-width="3.5" stroke-linecap="round" opacity=".7"/>
+
+        <!-- ── FRONT PRINTER FRAME — uprights at x=44 and x=244 ── -->
+        <rect x="40" y="4" width="7" height="82" rx="3" fill="#c4c0b8"/>
+        <rect x="241" y="4" width="7" height="82" rx="3" fill="#bcb8b0"/>
+        <!-- top crossbar -->
+        <rect x="38" y="2" width="212" height="8" rx="2.5" fill="#d8d4cc"/>
+        <!-- guide rod at y=50 -->
+        <rect x="40" y="50" width="210" height="5" rx="2" fill="#ccc8c0"/>
+
+        <!-- ── BLOB — center of bath, mid-depth (cy=128) ── -->
+        <ellipse cx="144" cy="130" rx="52" ry="14" fill="#f0ece4" opacity=".92"/>
+        <ellipse cx="144" cy="126" rx="48" ry="10" fill="#f5f2ec" opacity=".72"/>
+        <ellipse cx="132" cy="124" rx="24" ry="6" fill="white" opacity=".28"/>
+
+        <!-- ── PRINT HEAD animated, oscillating over center of blob ──
+             pr1 moves from translateX(36) to translateX(96), centered on blob x=144
+             carriage starts at x=42, so range: 42+36=78 to 42+96=138 … center ~108
+             To center on blob x=144: shift carriage base to x=80
+             range 80+36=116 to 80+96=176, center=146 ✓
+        -->
+        <g style="animation:pr1 3.4s ease-in-out infinite">
+          <!-- carriage block rides on rod -->
+          <rect x="80" y="44" width="34" height="18" rx="3" fill="#d4d0c8" stroke="#c0bcb4" stroke-width=".7"/>
+          <!-- syringe barrel -->
+          <rect x="90" y="24" width="12" height="22" rx="4" fill="url(#noz-g)" stroke="#a8b8c4" stroke-width=".7"/>
+          <rect x="92" y="20" width="8" height="6" rx="2" fill="#b4c4d0"/>
+          <!-- nozzle tip -->
+          <rect x="94" y="44" width="3" height="10" rx="1.5" fill="#8898a8"/>
+          <!-- ink thread: from nozzle tip (y=54) all the way down to blob top (y=116) -->
+          <!-- Using a line that animates opacity to suggest flow -->
+          <line x1="95.5" y1="54" x2="95.5" y2="116" stroke="#f0ece4" stroke-width="2" stroke-linecap="round" opacity=".85"/>
+          <!-- tube to pump -->
+          <path d="M102,32 C114,32 124,18 140,18" fill="none" stroke="#a8b8c4" stroke-width="1.8" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+    <div class="dlabel">Bao Group · Stanford</div>
+  </div>
+</div>
+
+<!-- Abbott: Aveir + Assert IQ -->
+<div class="erow reveal">
+  <div>
+    <p class="kicker"><strong>Abbott · Sunnyvale, CA</strong>2021–2025</p>
+    <h3 class="etitle">Aveir — Dual-Chamber Leadless Pacemaker</h3>
+    <p class="esub">End-to-end product design and development of the first dual-chamber leadless pacemaker, from new feature design through FDA regulatory submission.</p>
+    <ul class="ebul">
+      <li>Designed and implemented firmware and software changes to improve Aveir safety and efficacy</li>
+      <li>Owned feature design, system risk assessments, verification strategy, and regulatory documentation</li>
+      <li>Led weekly Change Control Board with 40+ cross-functional stakeholders</li>
+      <li>Investigated and resolved field issues; developed validated procedures used by Technical Services to correct patient devices in-field</li>
+      <li>Researched conduction system pacing — designed and executed early-stage electromechanical qualification testing</li>
+      <li>Revised risk assessments with clinical study findings; successful FDA submission for new pacing lead indication</li>
+    </ul>
+    <h3 class="etitle-sub">Assert IQ — Insertable Cardiac Monitor</h3>
+    <p class="esub">Spearheaded end-to-end systems integration, verification, FDA 510(k) submission, and launch of Abbott's next-gen Assert IQ ICM.</p>
+    <ul class="ebul">
+      <li>Primary interface between software, hardware, and clinical engineering</li>
+      <li>Led verification test procedure development and execution for 510(k) regulatory submission</li>
+    </ul>
+  </div>
+  <div class="dbox">
+    <div class="diagram tall" style="background:#f0efea;position:relative">
+      <img src="heart_diagram.png" style="width:127%;height:127%;object-fit:contain;object-position:-8% center;display:block;margin:-10% auto;padding:0" alt="Heart with Aveir and Assert IQ devices"/>
+      <!-- Minimal phone with ECG — matches site's warm neutral illustration style -->
+      <svg viewBox="0 0 56 104" xmlns="http://www.w3.org/2000/svg"
+           style="position:absolute;bottom:40%;right:13%;width:13%;height:auto;pointer-events:none;filter:drop-shadow(0 3px 10px rgba(0,0,0,0.18))">
+        <defs>
+          <clipPath id="phoneScreenClip2"><rect x="4" y="10" width="48" height="80" rx="3"/></clipPath>
+          <clipPath id="ekgClip2"><rect x="5" y="44" width="46" height="30"/></clipPath>
+        </defs>
+
+        <!-- Phone chassis — warm light grey matching illustration palette -->
+        <rect x="0" y="0" width="56" height="104" rx="9" fill="#cccac2" stroke="#b8b6ae" stroke-width=".6"/>
+        <rect x="1" y="1" width="54" height="102" rx="8.5" fill="#d8d6ce" opacity=".5"/>
+
+        <!-- Side buttons -->
+        <rect x="-1.5" y="22" width="2.5" height="9" rx="1.2" fill="#b8b6ae"/>
+        <rect x="-1.5" y="34" width="2.5" height="9" rx="1.2" fill="#b8b6ae"/>
+        <rect x="55" y="28" width="2.5" height="14" rx="1.2" fill="#b8b6ae"/>
+
+        <!-- Screen bezel -->
+        <rect x="3" y="9" width="50" height="82" rx="4" fill="#1a1814"/>
+
+        <!-- Screen -->
+        <rect x="4" y="10" width="48" height="80" rx="3" fill="#10100e"/>
+
+        <!-- Camera notch -->
+        <rect x="20" y="11.5" width="16" height="5" rx="2.5" fill="#0a0a08"/>
+
+        <!-- Status bar -->
+        <text x="8" y="21" font-family="'Geist Mono',monospace" font-size="3.8" fill="#706e66" opacity=".9">9:41</text>
+        <rect x="40" y="17.5" width="8" height="3.5" rx=".8" fill="none" stroke="#706e66" stroke-width=".6" opacity=".7"/>
+        <rect x="40.5" y="18" width="5.5" height="2.5" rx=".4" fill="#706e66" opacity=".7"/>
+
+        <!-- App label -->
+        <text x="8" y="32" font-family="'Geist',sans-serif" font-size="5" font-weight="600" fill="#c8c6be" letter-spacing=".04em">ECG</text>
+        <line x1="4" y1="35" x2="52" y2="35" stroke="#2a2820" stroke-width=".5"/>
+
+        <!-- HR readout -->
+        <text x="8" y="43" font-family="'Geist Mono',monospace" font-size="8" font-weight="400" fill="#d8d6ce">72</text>
+        <text x="22" y="39" font-family="'Geist Mono',monospace" font-size="3.5" fill="#706e66">BPM</text>
+        <text x="22" y="43.5" font-family="'Geist Mono',monospace" font-size="3" fill="#504e48">HR</text>
+
+        <!-- ECG waveform area -->
+        <rect x="4" y="44" width="48" height="30" fill="#0c0c0a"/>
+        <!-- Grid — very subtle, warm tint -->
+        <g clip-path="url(#ekgClip2)" opacity=".1">
+          <line x1="5" y1="51" x2="51" y2="51" stroke="#c8c6be" stroke-width=".4"/>
+          <line x1="5" y1="59" x2="51" y2="59" stroke="#c8c6be" stroke-width=".4"/>
+          <line x1="5" y1="67" x2="51" y2="67" stroke="#c8c6be" stroke-width=".4"/>
+          <line x1="19" y1="44" x2="19" y2="74" stroke="#c8c6be" stroke-width=".4"/>
+          <line x1="33" y1="44" x2="33" y2="74" stroke="#c8c6be" stroke-width=".4"/>
+          <line x1="47" y1="44" x2="47" y2="74" stroke="#c8c6be" stroke-width=".4"/>
+        </g>
+        <!-- Scrolling ECG — warm off-white trace, two seamless copies (46px each = 92px total) -->
+        <g clip-path="url(#ekgClip2)">
+          <g style="animation:ekgScroll 2.6s linear infinite">
+            <polyline
+              points="0,59  3,59  4,57.5  6,59  8,59  9,58.5  10,59  11,52  12,67  13,59  16,59  18,61.5  20,59  23,59
+                      23,59  26,59  27,57.5  29,59  31,59  32,58.5  33,59  34,52  35,67  36,59  39,59  41,61.5  43,59  46,59
+                      46,59  49,59  50,57.5  52,59  54,59  55,58.5  56,59  57,52  58,67  59,59  62,59  64,61.5  66,59  69,59
+                      69,59  72,59  73,57.5  75,59  77,59  78,58.5  79,59  80,52  81,67  82,59  85,59  87,61.5  89,59  92,59"
+              fill="none" stroke="#d8d6ce" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>
+          </g>
+        </g>
+
+        <!-- Separator -->
+        <line x1="4" y1="74" x2="52" y2="74" stroke="#2a2820" stroke-width=".5"/>
+
+        <!-- Bottom label -->
+        <text x="8" y="82" font-family="'Geist Mono',monospace" font-size="3.2" fill="#504e48">NORMAL SINUS</text>
+        <text x="8" y="87" font-family="'Geist Mono',monospace" font-size="3.2" fill="#3a3830">Assert IQ · II</text>
+
+        <!-- Home indicator -->
+        <rect x="19" y="92" width="18" height="2.5" rx="1.2" fill="#3a3830" opacity=".6"/>
+      </svg>
+    </div>
+    <div class="dlabel">Aveir AR + VR · Assert IQ · Abbott</div>
+  </div>
+</div>
+
+<!-- CRT Device -->
+<div class="erow reveal">
+  <div>
+    <p class="kicker"><strong>Columbia Senior Capstone</strong>Sep 2020 – May 2021</p>
+    <h3 class="etitle">Capillary Refill Time (CRT) Device</h3>
+    <p class="esub">Handheld device for non-invasive, automated, standardized CRT measurement — rapid quantitative peripheral perfusion readings for ICU use.</p>
+    <ul class="ebul">
+      <li>Identified clinical need for measurement of capillary refill time in patients with septic shock
+      <li>Designed handheld clamp with linear actuator to apply controlled blanching force to fingertip</li>
+      <li>Integrated PPG and RGB sensors to measure blood volume return and algorithmically quantify peripheral perfusion</li>
+    </ul>
+  </div>
+  <div class="dbox">
+    <div class="diagram">
+
+      <svg viewBox="-27 -25 360 204" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="finger-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#f5c8a0"/><stop offset="100%" stop-color="#e8b080"/></linearGradient>
+          <linearGradient id="dev-bot-jaw" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8ccd8"/><stop offset="100%" stop-color="#9498a8"/></linearGradient>
+          <linearGradient id="dev-top-jaw" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8ecf8"/><stop offset="100%" stop-color="#c0c4d4"/></linearGradient>
+          <linearGradient id="screen-g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#0d2a40"/><stop offset="100%" stop-color="#0a1e30"/></linearGradient>
+          <filter id="crtsh"><feDropShadow dx="1" dy="3" stdDeviation="6" flood-opacity=".15"/></filter>
+        </defs>
+        <rect width="360" height="204" fill="#f0efea"/>
+
+        <!--
+          Pulse-ox style CRT device centered at (180,102).
+          Bottom jaw: fixed, from x=50..230, y=108..148. Finger slot at right (x=180+).
+          Top jaw: rotates UPWARD from hinge at left, opening upward.
+          Finger enters from right, sits in bottom jaw slot.
+          Screen on bottom jaw left area.
+        -->
+
+        <!-- FINGER — simplified two-oval shape with knuckle, resting under open top jaw -->
+        <g filter="url(#crtsh)" transform="scale(-1,1) translate(-360,0)">
+          <!-- proximal phalanx oval (entering from left, partially inside device) -->
+          <rect x="53" y="80" width="104" height="28" rx="12" ry="12" fill="#e8b080"/ transform="rotate(0, 115, 128)"/>
+          <!-- knuckle joint -->
+          <ellipse cx="152" cy="94" rx="10" ry="13" fill="#dea870"/>
+          <!-- distal phalanx oval (fingertip extending right) -->
+          <rect x="150" y="81" width="90" height="26" rx="10" ry="10" fill="#e8b080"/>
+          <!-- fingernail -->
+          <ellipse cx="222" cy="84" rx="16" ry="4" fill="#faecd8" opacity=".85"/ >
+        </g>
+
+        <!-- BOTTOM JAW (fixed) — contains screen -->
+        <g filter="url(#crtsh)">
+          <path d="M50,110 L50,148 Q52,155 66,157 L222,157 Q234,155 236,148 L236,110 Z" fill="url(#dev-bot-jaw)"/>
+
+          <!-- screen embedded in bottom jaw -->
+          <rect x="60" y="115" width="90" height="36" rx="6" fill="#091e30"/>
+          <rect x="62" y="117" width="86" height="32" rx="5" fill="#0d2a40" style="animation:crtScreenGlow 2.4s ease-in-out infinite"/>
+          <rect x="64" y="119" width="82" height="12" rx="3" fill="#1a3a54" opacity=".5"/>
+          <text x="67" y="130" font-family="'Geist Mono',monospace" font-size="7" fill="#40c8c0" letter-spacing=".03em" style="animation:screenPulse 2.4s ease-in-out infinite">CRT</text>
+          <text x="65" y="147" font-family="'Geist Mono',monospace" font-size="18" font-weight="700" fill="#40e8e0" style="animation:screenPulse 2.4s ease-in-out infinite">1.2s</text>
+
+          <!-- round trigger button -->
+          <circle cx="205" cy="132" r="11" fill="#3838a0" opacity=".9"/>
+          <circle cx="205" cy="132" r="7.5" fill="#5050c0"/>
+          <circle cx="203" cy="130" r="3" fill="#9090e0" opacity=".6"/>
+
+          <!-- sensor LED on inner face -->
+          <ellipse cx="236" cy="130" rx="3.5" ry="7" fill="#00cc44" opacity=".55" style="animation:ledGreen 1.9s ease-in-out infinite"/>
+        </g>
+
+        <!-- TOP JAW — rotated UPWARD, pivots from left hinge ~(68, 110) -->
+        <!-- Jaw tilted up ~30deg from horizontal, opening upward -->
+        <g filter="url(#crtsh)" transform="rotate(-32, 68, 110)">
+          <path d="M68,72 L68,110 L234,110 Q244,108 246,102 L246,80 Q244,72 234,72 Z" fill="url(#dev-top-jaw)"/>
+          <!-- top highlight -->
+          <path d="M68,72 L234,72 Q244,72 246,80 L246,84 Q244,76 234,76 L68,76 Z" fill="white" opacity=".2"/>
+          <!-- hinge detail -->
+          <circle cx="68" cy="110" r="8" fill="#a0a4b8"/>
+          <circle cx="68" cy="110" r="5" fill="#b0b4c8"/>
+          <!-- sensor on underside of top jaw -->
+          <circle cx="185" cy="105" r="5" fill="#cc2020" opacity=".8" style="animation:ledRed 1.6s ease-in-out infinite"/>
+          <circle cx="185" cy="105" r="3" fill="#ff4444" opacity=".7" style="animation:ledRed 1.6s ease-in-out infinite .1s"/>
+        </g>
+      </svg>
+    </div>
+    <div class="dlabel">Columbia Biomedical Engineering Capstone</div>
+  </div>
+</div>
+
+<!-- COVID + Bacteria side by side, no illustrations -->
+<div class="erow-pair reveal">
+  <div class="epane">
+    <p class="kicker"><strong>Columbia BME</strong>Mar – May 2020</p>
+    <h3 class="etitle">Deep Learning COVID-19 Detection in Chest X-Rays</h3>
+    <p class="esub">Implemented deep learning networks to detect COVID-19 in chest X-rays with high accuracy using transfer learning before substantial data was available.</p>
+    <ul class="ebul">
+      <li>Fine-tuned VGG16 and ResNet50 via transfer learning for binary COVID-19 classification from chest radiographs</li>
+      <li>Mitigated overfitting on a small 284-image dataset through data augmentation and early stopping</li>
+      <li>Achieved 94% accuracy, with complementary sensitivity/specificity tradeoffs across architectures</li>
+    </ul>
+  </div>
+  <div class="epane">
+    <p class="kicker"><strong>Columbia BME</strong>Oct – Dec 2020</p>
+    <h3 class="etitle">Bacterial Therapy Computational Model</h3>
+    <p class="esub">Quantitatively modeled a tumor-targeting bacterial therapy synthetic biology system to improve localization and dosage control.</p>
+    <ul class="ebul">
+      <ul class="ebul">
+      <li>Built MATLAB ODE system to model circuit dynamics and toxin output across hypoxic and normoxic conditions</li>
+      <li>Showed quorum sensing enables population-wide behavioral synchronization from a small normoxia-sensing fraction</li>
+      <li>Identified key tunable parameters governing basal and maximum toxin output and promoter fold-change thresholds for reliable state switching</li>
+    </ul>
+  </div>
+</div>
+
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" class="sec">
+<h2 class="sec-title reveal">Experience</h2>
+
+<div class="erow reveal">
+  <div>
+    <p class="kicker"><strong>Abbott · Sunnyvale, CA</strong>July 2021 – June 2025</p>
+    <h3 class="etitle">Systems Engineer II</h3>
+    <ul class="ebul">
+      <li>Drove end-to-end design and development of Aveir, Abbott's first dual-chamber leadless pacemaker (design inputs, risk assessments, verification, regulatory documentation)</li>
+      <li>Led weekly Change Control Board for Aveir with 40+ cross-functional stakeholders</li>
+      <li>Investigated and resolved field issues; developed validated procedures used by Technical Services to correct patient devices in-field</li>
+      <li>Spearheaded systems integration, 510(k) submission, and launch of Assert IQ insertable cardiac monitor</li>
+    </ul>
+  </div>
+  <div class="dbox">
+    <div class="diagram short" style="background:#f0efea">
+      <img src="devices_abbott.png" style="width:170%;height:170%;object-fit:contain;object-position:22% center;display:block;margin:-15% auto -10% auto;padding:0" alt="Aveir VR, Aveir AR, Assert IQ devices"/>
+    </div>
+    <div class="dlabel">Aveir VR · Aveir DR · Assert IQ · Abbott</div>
+  </div>
+</div>
+
+<div class="erow reveal">
+  <div>
+    <p class="kicker"><strong>Hologic Inc. · Marlborough, CT</strong>Summer 2020</p>
+    <h3 class="etitle">Systems Engineering Intern</h3>
+    <ul class="ebul">
+      <li>Redesigned automatic exposure control (AEC) algorithm for mammography systems to incorporate a more comfortable compression paddle</li>
+      <li>Validated algorithm design with phantom model experiments and analysis of clinical data using image processing and medical physics</li>
+    </ul>
+  </div>
+  <div class="dbox">
+    <div class="diagram short">
+      <!-- Clean mammography gantry, no AEC gadget, reference-inspired -->
+      <svg viewBox="10 0 360 204" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="mam-bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#d8e8f4"/><stop offset="100%" stop-color="#c4d8ec"/></linearGradient>
+          <linearGradient id="mam-body" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#d8d8e0"/><stop offset="100%" stop-color="#e8e8f0"/></linearGradient>
+          <filter id="mamd"><feDropShadow dx="2" dy="4" stdDeviation="8" flood-opacity=".16"/></filter>
+        </defs>
+        <rect width="360" height="204" fill="#f0efea"/>
+
+        <!-- C-arm gantry — right side attachment like reference image -->
+        <!-- vertical column / gantry body right -->
+        <g filter="url(#mamd)">
+          <rect x="264" y="4" width="64" height="196" rx="10" fill="url(#mam-body)"/>
+          <rect x="268" y="6" width="56" height="192" rx="9" fill="#eeeef6"/>
+          <!-- control panel on right column -->
+          <rect x="272" y="80" width="44" height="60" rx="5" fill="#d8d8e0"/>
+          <rect x="276" y="84" width="36" height="52" rx="4" fill="#e0e0e8"/>
+          <!-- button grid -->
+          <circle cx="287" cy="95" r="4" fill="#c8c8d0"/><circle cx="299" cy="95" r="4" fill="#c8c8d0"/>
+          <circle cx="287" cy="108" r="4" fill="#c8c8d0"/><circle cx="299" cy="108" r="4" fill="#c8c8d0"/>
+          <circle cx="287" cy="121" r="4" fill="#c8c8d0"/><circle cx="299" cy="121" r="4" fill="#c8c8d0"/>
+          <circle cx="287" cy="134" r="4" fill="#c8c8d0"/>
+          <!-- green indicator -->
+          <circle cx="299" cy="134" r="4" fill="#50c860" opacity=".8"/>
+        </g>
+
+        <!-- C-arm horizontal arm -->
+        <g filter="url(#mamd)">
+          <rect x="60" y="4" width="212" height="44" rx="12" fill="url(#mam-body)"/>
+          <rect x="64" y="6" width="204" height="40" rx="10" fill="#eeeef6"/>
+          <!-- X-ray tube head at left end of top arm -->
+          <rect x="44" y="6" width="60" height="40" rx="8" fill="#d0d0d8"/>
+          <rect x="48" y="8" width="52" height="36" rx="7" fill="#dcdce4"/>
+        </g>
+
+        <!-- Breast phantom — sitting on detector -->
+        <g filter="url(#mamd)">
+          <ellipse cx="148" cy="133" rx="52" ry="26" fill="#d07838" opacity=".9"/>
+          <ellipse cx="140" cy="129" rx="38" ry="19" fill="#dc8848" opacity=".65"/>
+          <ellipse cx="136" cy="127" rx="24" ry="11" fill="#e89858" opacity=".4"/>
+        </g>
+
+        <!-- Compression paddle pressed down on top of phantom -->
+        <g filter="url(#mamd)">
+          <rect x="68" y="104" width="190" height="16" rx="5" fill="#c8dce8" opacity=".85"/>
+          <rect x="72" y="106" width="182" height="12" rx="4" fill="#d8eaf6" opacity=".7"/>
+          <!-- paddle connector up to arm -->
+          <rect x="196" y="96" width="24" height="12" rx="3" fill="#b8c8d4"/>
+        </g>
+
+        <!-- Detector plate / image receptor (carbon-fibre look) -->
+        <g filter="url(#mamd)">
+          <rect x="68" y="150" width="190" height="40" rx="6" fill="#1a1a1a"/>
+          <rect x="70" y="151" width="186" height="37" rx="5" fill="#222222"/>
+          <!-- carbon fibre texture suggestion -->
+          <g stroke="#2a2a2a" stroke-width=".5" opacity=".6">
+            <line x1="70" y1="155" x2="256" y2="155"/><line x1="70" y1="160" x2="256" y2="160"/>
+            <line x1="70" y1="165" x2="256" y2="165"/><line x1="70" y1="170" x2="256" y2="170"/>
+            <line x1="70" y1="175" x2="256" y2="175"/><line x1="70" y1="180" x2="256" y2="180"/>
+          </g>
+          <!-- LEDs on detector -->
+          <circle cx="90" cy="168" r="3.5" fill="#ddcc00" opacity=".8"/>
+          <circle cx="105" cy="168" r="3.5" fill="#50c060" opacity=".8"/>
+          <!-- orange AEC indicator line -->
+          <rect x="132" y="162" width="60" height="4" rx="2" fill="#e06820" opacity=".7"/>
+          <!-- knob -->
+          <circle cx="236" cy="168" r="8" fill="#303030"/>
+          <circle cx="236" cy="168" r="5" fill="#404040"/>
+        </g>
+
+        <!-- C-arm lower arm connecting column to detector -->
+        <g filter="url(#mamd)">
+          <rect x="240" y="44" width="32" height="112" rx="8" fill="url(#mam-body)"/>
+          <rect x="244" y="46" width="24" height="108" rx="7" fill="#eeeef6"/>
+        </g>
+      </svg>
+    </div>
+    <div class="dlabel">Hologic</div>
+  </div>
+</div>
+
+<div class="erow reveal">
+  <div>
+    <p class="kicker"><strong>Hillman Laboratory, Columbia University</strong>2018–2020</p>
+    <h3 class="etitle">Research Assistant</h3>
+    <ul class="ebul">
+      <li>Applied Python-based ML to track and analyze physical behavior of mice to study brain states utilizing novel optogenetic wide-field optical mapping microscopy</li>
+      <li>Designed and fabricated mechanical components and sensors for in-vivo neuroimaging and behavior-tracking setup</li>
+    </ul>
+  </div>
+  <div class="dbox">
+    <div class="diagram short">
+      <svg viewBox="22 0 360 204" xmlns="http://www.w3.org/2000/svg">
+        <defs><filter id="hmd"><feDropShadow dx="1" dy="3" stdDeviation="5" flood-opacity=".1"/></filter></defs>
+        <rect width="360" height="204" fill="#f0efea"/>
+
+        <!-- Microscope — centered left half, vertically centered -->
+        <g filter="url(#hmd)" transform="translate(42,6)">
+          <!-- base plate -->
+          <rect x="16" y="172" width="110" height="12" rx="4" fill="#c8c4bc"/>
+          <!-- arm column -->
+          <rect x="62" y="38" width="16" height="136" rx="3.5" fill="#c4c0b8"/>
+          <!-- arm horizontal -->
+          <rect x="28" y="34" width="88" height="12" rx="3.5" fill="#c8c4bc"/>
+          <!-- head -->
+          <rect x="46" y="12" width="56" height="26" rx="6" fill="#c0bcb4"/>
+          <!-- eyepieces -->
+          <ellipse cx="60" cy="10" rx="8" ry="6" fill="#9898a0"/>
+          <ellipse cx="82" cy="10" rx="8" ry="6" fill="#9898a0"/>
+          <ellipse cx="60" cy="10" rx="5" ry="3.5" fill="#484850"/>
+          <ellipse cx="82" cy="10" rx="5" ry="3.5" fill="#484850"/>
+          <!-- objective lens -->
+          <rect x="66" y="38" width="9" height="22" rx="3.5" fill="#888890"/>
+          <ellipse cx="70" cy="60" rx="5" ry="3.5" fill="#606068"/>
+          <!-- stage -->
+          <rect x="32" y="106" width="88" height="12" rx="3.5" fill="#c0bcb4"/>
+          <!-- Petri dish on stage -->
+          <ellipse cx="71" cy="112" rx="32" ry="9" fill="#dce8f4" opacity=".9"/>
+          <ellipse cx="71" cy="112" rx="32" ry="9" fill="none" stroke="#a8bccf" stroke-width="1.2"/>
+          <ellipse cx="71" cy="111" rx="27" ry="6.5" fill="#ccdde8" opacity=".7"/>
+          <ellipse cx="71" cy="111" rx="27" ry="6.5" fill="none" stroke="#b0c4d0" stroke-width=".8" stroke-dasharray="2,1.5" opacity=".6"/>
+          <ellipse cx="71" cy="111" rx="22" ry="5" fill="#f0dcd8" opacity=".5"/>
+          <!-- illumination arm -->
+          <path d="M94,28 C106,28 116,46 116,62 L116,106" fill="none" stroke="#4488cc" stroke-width="2" opacity=".65"/>
+        </g>
+
+        <!-- Brain inset — centered right half -->
+        <g filter="url(#hmd)" transform="translate(192,12)">
+          <rect width="158" height="182" rx="7" fill="#f0efea" stroke="#e0d0cc" stroke-width=".7"/>
+          <text x="10" y="14" font-family="'Geist Mono',monospace" font-size="5.5" fill="#a08888">WFOM</text>
+          <line x1="7" y1="18" x2="151" y2="18" stroke="#e0d0cc" stroke-width=".5"/>
+          <!-- Left hemisphere -->
+          <path d="M79,24 C54,22 28,34 20,56 C13,74 15,96 22,116 C31,138 53,156 79,160 L79,24Z" fill="#f0a090"/>
+          <path d="M79,24 C54,22 28,34 20,56 C13,74 15,96 22,116 C31,138 53,156 79,160 L79,24Z" fill="none" stroke="#d07868" stroke-width="1.2"/>
+          <!-- Right hemisphere -->
+          <path d="M79,24 C104,22 130,34 138,56 C145,74 143,96 136,116 C127,138 105,156 79,160 L79,24Z" fill="#f0a090"/>
+          <path d="M79,24 C104,22 130,34 138,56 C145,74 143,96 136,116 C127,138 105,156 79,160 L79,24Z" fill="none" stroke="#d07868" stroke-width="1.2"/>
+          <!-- longitudinal fissure -->
+          <line x1="79" y1="24" x2="79" y2="160" stroke="#c06858" stroke-width="1.4" opacity=".7"/>
+          <!-- Sulci left -->
+          <path d="M54,36 C44,48 38,62 42,76" fill="none" stroke="#d07868" stroke-width="1.1" opacity=".7"/>
+          <path d="M36,58 C28,70 26,86 32,102" fill="none" stroke="#d07868" stroke-width="1" opacity=".65"/>
+          <path d="M42,90 C36,104 36,118 44,132" fill="none" stroke="#d07868" stroke-width="1" opacity=".6"/>
+          <path d="M58,32 C50,46 50,62 56,76" fill="none" stroke="#d07868" stroke-width="1" opacity=".55"/>
+          <path d="M66,68 C60,82 60,98 64,114" fill="none" stroke="#d07868" stroke-width="1" opacity=".55"/>
+          <!-- Sulci right (mirrored) -->
+          <path d="M104,36 C114,48 120,62 116,76" fill="none" stroke="#d07868" stroke-width="1.1" opacity=".7"/>
+          <path d="M122,58 C130,70 132,86 126,102" fill="none" stroke="#d07868" stroke-width="1" opacity=".65"/>
+          <path d="M116,90 C122,104 122,118 114,132" fill="none" stroke="#d07868" stroke-width="1" opacity=".6"/>
+          <path d="M100,32 C108,46 108,62 102,76" fill="none" stroke="#d07868" stroke-width="1" opacity=".55"/>
+          <path d="M92,68 C98,82 98,98 94,114" fill="none" stroke="#d07868" stroke-width="1" opacity=".55"/>
+          <!-- gyri highlights -->
+          <path d="M28,68 C36,60 48,58 56,64" fill="none" stroke="#f4b0a0" stroke-width="1.5" opacity=".45"/>
+          <path d="M24,88 C32,80 44,78 52,82" fill="none" stroke="#f4b0a0" stroke-width="1.5" opacity=".45"/>
+          <path d="M130,68 C122,60 110,58 102,64" fill="none" stroke="#f4b0a0" stroke-width="1.5" opacity=".45"/>
+          <path d="M134,88 C126,80 114,78 106,82" fill="none" stroke="#f4b0a0" stroke-width="1.5" opacity=".45"/>
+          <!-- scale bar -->
+          <line x1="14" y1="168" x2="42" y2="168" stroke="#6090a8" stroke-width="1.5"/>
+          <text x="14" y="178" font-family="'Geist Mono',monospace" font-size="5.5" fill="#6090a8">1 mm</text>
+        </g>
+      </svg>
+    </div>
+    <div class="dlabel">Hillman Lab · Columbia</div>
+  </div>
+</div>
+
+<div class="erow reveal">
+  <div>
+    <p class="kicker"><strong>Auscultech Dx · Children's National Hospital, DC</strong>Summer 2018</p>
+    <h3 class="etitle">R&D Intern</h3>
+    <ul class="ebul">
+      <li>Assisted in development of StethAid, a smart stethoscope that uses machine learning to diagnose benign heart murmurs</li>
+      <li>Designed and prototyped hardware modifications to enhance noise isolation of smart stethoscope</li>
+      <li>Executed qualification tests in anachroic chamber and used MATLAB to analyze frequency response and SNR</li>
+      <li>Redesigned mobile app UI/UX and directed external software development team</li>
+    </ul>
+  </div>
+  <div class="dbox">
+    <div class="diagram short">
+      <svg viewBox="-20 0 360 204" xmlns="http://www.w3.org/2000/svg">
+        <defs><filter id="aud"><feDropShadow dx="1" dy="3" stdDeviation="5" flood-opacity=".1"/></filter></defs>
+        <rect width="360" height="204" fill="#f0efea"/>
+
+        <!-- Smart stethoscope — centered in left half (center at 90, 102) -->
+        <g filter="url(#aud)" transform="translate(18,42)">
+          <!-- chest piece disk -->
+          <circle cx="18" cy="60" r="20" fill="#1a1a1a"/>
+          <circle cx="18" cy="60" r="16" fill="#282828"/>
+          <circle cx="18" cy="60" r="11" fill="#e8e8e8"/>
+          <circle cx="18" cy="60" r="7" fill="white"/>
+          <!-- connector stem -->
+          <rect x="36" y="56" width="16" height="8" rx="4" fill="#1a1a1a"/>
+          <!-- main white body -->
+          <rect x="50" y="40" width="130" height="50" rx="16" fill="#e8e8e8"/>
+          <rect x="52" y="42" width="126" height="46" rx="15" fill="#f2f2f2"/>
+          <rect x="54" y="42" width="122" height="16" rx="12" fill="white" opacity=".6"/>
+          <!-- LEDs -->
+          <circle cx="112" cy="64" r="4.5" fill="#0070d0" opacity=".95"/>
+          <circle cx="128" cy="64" r="4.5" fill="#00c860" opacity=".95"/>
+          <!-- side button -->
+          <rect x="175" y="52" width="6" height="18" rx="3" fill="#c8c8cc"/>
+        </g>
+
+        <!-- Phone app — centered in right half (center at 274, 102) -->
+        <g filter="url(#aud)" transform="translate(222,20)">
+          <rect width="82" height="164" rx="12" fill="#1a1a28"/>
+          <rect x="3" y="3" width="76" height="158" rx="10" fill="#0e0e1c"/>
+          <!-- notch -->
+          <rect x="28" y="5" width="26" height="3.5" rx="2" fill="#0a0a18"/>
+          <!-- screen area -->
+          <rect x="6" y="18" width="70" height="136" rx="7" fill="#0a1420"/>
+          <!-- App header -->
+          <rect x="6" y="18" width="70" height="20" rx="7" fill="#0d1a2a"/>
+          <text x="12" y="32" font-family="'Geist',sans-serif" font-size="7.5" font-weight="500" fill="#a0b8cc">Auscultech</text>
+          <!-- Heart sound waveform -->
+          <rect x="8" y="40" width="66" height="30" rx="3" fill="#060e18"/>
+          <text x="10" y="49" font-family="'Geist Mono',monospace" font-size="4.5" fill="#304858">Heart Sound</text>
+          <polyline points="10,62 15,57 18,65 22,52 26,62 29,59 32,65 36,53 40,62 43,58 46,65 50,52 54,62 57,58 60,65 64,54 68,62" fill="none" stroke="#00c0a0" stroke-width="1.2" stroke-linejoin="round"/>
+          <!-- Freq response -->
+          <rect x="8" y="74" width="66" height="70" rx="3" fill="#060e18"/>
+          <text x="10" y="83" font-family="'Geist Mono',monospace" font-size="4.5" fill="#304858">Freq Response</text>
+          <polyline points="10,96 18,90 26,87 34,88 42,93 50,93 58,90 66,94" fill="none" stroke="#4488cc" stroke-width="1.2"/>
+        </g>
+      </svg>
+    </div>
+    <div class="dlabel">Auscultech Dx</div>
+  </div>
+</div>
+
+</section>
+
+<!-- EDUCATION -->
+<section id="education" class="sec">
+<h2 class="sec-title reveal">Education</h2>
+
+<div class="erow-pair reveal">
+  <!-- Stanford -->
+  <div class="epane">
+    <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem">
+      <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px;flex-shrink:0">
+        <rect width="36" height="36" rx="5" fill="#8c1515"/>
+        <g transform="translate(18,18)" fill="white">
+          <polygon points="0,-8 -3.5,-1 -1.8,-1 -5.5,4.5 5.5,4.5 1.8,-1 3.5,-1" opacity=".9"/>
+          <rect x="-1.2" y="4.5" width="2.4" height="4" opacity=".85"/>
+        </g>
+      </svg>
+      <div>
+        <p class="kicker" style="margin:0"><strong>Stanford University</strong><span>2025 – Present</span></p>
+      </div>
+    </div>
+    <h3 class="etitle">Master of Science in Bioengineering</h3>
+    <ul class="ebul">
+      <li>GPA: 4.06</li>
+      <li>Researcher, Bao Group</li>
+      <li>Researcher, Skylar-Scott Lab</li>
+      <li>Coursework: Stem Cell Biology &amp; Regenerative Medicine, 3D Bioprinting, Mathematical Modeling of Biological Systems, Microfluidics Lab, Mechanotransduction in Cells &amp; Tissues, Orthopedic Bioengineering</li>
+    </ul>
+  </div>
+  <!-- Columbia -->
+  <div class="epane">
+    <div style="display:flex;align-items:center;gap:.7rem;margin-bottom:.5rem">
+      <svg viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg" style="width:36px;height:36px;flex-shrink:0">
+        <rect width="36" height="36" rx="5" fill="#003087"/>
+        <g transform="translate(18,20)" fill="white" opacity=".92">
+          <rect x="-8" y="5" width="16" height="2" rx=".5"/>
+          <path d="M-8,5 C-8,-2 -5,-6 0,-7 C5,-6 8,-2 8,5 L6,5 C6,0 4,-4 0,-5 C-4,-4 -6,0 -6,5 Z"/>
+          <rect x="-1" y="-9" width="2" height="4" rx=".5"/>
+          <rect x="-2.5" y="-8" width="5" height="1.5" rx=".5"/>
+          <rect x="-8.5" y="-3" width="1.5" height="3" rx=".5"/>
+          <rect x="-9.5" y="-2" width="3.5" height="1.5" rx=".5"/>
+          <rect x="7" y="-3" width="1.5" height="3" rx=".5"/>
+          <rect x="6" y="-2" width="3.5" height="1.5" rx=".5"/>
+        </g>
+      </svg>
+      <div>
+        <p class="kicker" style="margin:0"><strong>Columbia University SEAS</strong><span>Class of 2021</span></p>
+      </div>
+    </div>
+    <h3 class="etitle">BS in Biomedical Engineering</h3>
+    <ul class="ebul">
+      <li>GPA: 3.84 (Dean's List every semester)</li>
+      <li>Research Assistant, Hillman Laboratory for Functional Optical Imaging</li>
+      <li>Dean's Office Fund Research Grant Recipient, 2019</li>
+      <li>Coursework: Bioinstrumentation, Quantitative Physiology, Signals &amp; Systems, Tissue Engineering, Deep Learning in BME, CAD, Human-Centered Design, Entrepreneurship in Biotechnology</li>
+      <li>Camp Kesem (Columbia Chapter): Executive Board Member and Counselor</li>
+    </ul>
+  </div>
+</div>
+
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="sec">
+<h2 class="sec-title reveal">Skills</h2>
+<div class="reveal sk-grid">
+  <div class="sk-row">
+    <span class="sk-label">Bioengineering</span>
+    <div class="sk-tags">
+      <span class="sk-tag">Cardiac Electromechanical Physiology</span>
+      <span class="sk-tag">3D Bioprinting</span>
+      <span class="sk-tag">Tissue Engineering</span>
+      <span class="sk-tag">Bioinstrumentation</span>
+      <span class="sk-tag">Fluorescence Microscopy</span>
+      <span class="sk-tag">Biomaterials</span>
+      <span class="sk-tag">Cell &amp; Tissue Culture</span>
+      <span class="sk-tag">Biomechanics</span>
+      <span class="sk-tag">Microfluidics</span>
+    </div>
+  </div>
+  <div class="sk-row">
+    <span class="sk-label">Medical Devices</span>
+    <div class="sk-tags">
+      <span class="sk-tag">Implantable Device R&amp;D</span>
+      <span class="sk-tag">Systems Engineering</span>
+      <span class="sk-tag">Embedded Firmware</span>
+      <span class="sk-tag">Wireless Telemetry</span>
+      <span class="sk-tag">Systems Integration</span>
+      <span class="sk-tag">Remote Patient Monitoring Software Architecture</span>
+      <span class="sk-tag">Verification &amp; Validation</span>
+      <span class="sk-tag">Regulatory Documentation</span>
+      <span class="sk-tag">Quality Management Systems</span>
+      <span class="sk-tag">Risk Assessment</span>
+      <span class="sk-tag">Design Controls</span>
+    </div>
+  </div>
+  <div class="sk-row">
+    <span class="sk-label">Software</span>
+    <div class="sk-tags">
+      <span class="sk-tag">Python</span>
+      <span class="sk-tag">MATLAB</span>
+      <span class="sk-tag">Machine learning</span>
+      <span class="sk-tag">Deep learning</span>
+      <span class="sk-tag">Signal &amp; image processing</span>
+      <span class="sk-tag">CAD (SolidWorks &amp; Fusion)</span>
+      <span class="sk-tag">Computational modeling</span>
+      <span class="sk-tag">Data analysis &amp; visualization</span>
+    </div>
+  </div>
+  <div class="sk-row">
+    <span class="sk-label">Design &amp; Fabrication</span>
+    <div class="sk-tags">
+      <span class="sk-tag">3D printing</span>
+      <span class="sk-tag">Laser cutting</span>
+      <span class="sk-tag">Electrical lab equipment</span>
+      <span class="sk-tag">UI/UX design</span>
+      <span class="sk-tag">Product design</span>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="sec">
+<h2 class="sec-title reveal">Contact</h2>
+<div class="clinks reveal">
+  <a href="mailto:bhross@stanford.edu" class="cl"><svg viewBox="0 0 13 13" fill="none"><rect x=".5" y="2" width="12" height="9" rx="1" stroke="currentColor" stroke-width="1.1"/><path d="M.5 3.5l6 4 6-4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>bhross@stanford.edu</a>
+  <a href="https://www.linkedin.com/in/brian-ross-bme/" target="_blank" class="cl">
+    <svg viewBox="0 0 13 13" fill="none"><rect x=".5" y=".5" width="12" height="12" rx="1.5" stroke="currentColor" stroke-width="1.1"/><path d="M3.5 5v5M3.5 3v.5M6 10V7.5a1.5 1.5 0 013 0V10M6 5v5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+    LinkedIn
+  </a>
+</div>
+</section>
+
+</div>
+
+<footer>
+  <span>Brian Ross · <a href="mailto:bhross@stanford.edu" style="color:inherit;text-decoration:none">bhross@stanford.edu</a> · <a href="https://www.linkedin.com/in/brian-ross-bme/" target="_blank" style="color:inherit;text-decoration:none">LinkedIn</a></span>
+  <span>© 2025</span>
+</footer>
+
+<script>
+// Only hide-then-reveal when JS is active
+document.documentElement.classList.add('js-reveal');
+const revealEls = document.querySelectorAll('.reveal');
+if ('IntersectionObserver' in window) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList
