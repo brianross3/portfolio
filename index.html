@@ -136,6 +136,7 @@ footer span{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.
 @keyframes crtScreenGlow{0%,100%{opacity:.7}40%{opacity:1}70%{opacity:.85}}
 
 @media(max-width:820px){
+  html,body{overflow-x:hidden;max-width:100%}
   .erow,.erow-pair{grid-template-columns:1fr}
   .erow-pair .epane{border-right:none;padding:.85rem 0}
   .summary{grid-template-columns:1fr}
@@ -143,13 +144,16 @@ footer span{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.
   .sum-col:last-child{border-bottom:none}
   nav{padding:0 1.2rem}.wrap{padding:0 1.2rem}
   footer{flex-direction:column;gap:.3rem;padding:.9rem 1.2rem}
+  .hero-bio{white-space:normal}
+  .sk-row{flex-direction:column;gap:.3rem}
+  .sk-label{width:auto;padding-top:0}
 }
 </style>
 </head>
 <body>
 
 <nav>
-  <a href="#hero" class="nav-logo">Brian Ross</a>
+  <a href="#hero" class="nav-logo"></a>
   <ul class="nav-r">
     <li><a href="#projects">Projects</a></li>
     <li><a href="#experience">Experience</a></li>
@@ -348,8 +352,8 @@ footer span{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.
       <li>Owned feature design, system risk assessments, verification strategy, and regulatory documentation</li>
       <li>Led weekly Change Control Board with 40+ cross-functional stakeholders</li>
       <li>Investigated and resolved field issues; developed validated procedures used by Technical Services to correct patient devices in-field</li>
-      <li>Researched conduction system pacing; designed and executed early-stage electromechanical qualification testing to inform prototype iteration</li>
-      <li>Revised risk assessments with clinical study findings leading to successful FDA submission for new pacing lead indication</li>
+      <li>Researched conduction system pacing — designed and executed early-stage electromechanical qualification testing</li>
+      <li>Revised risk assessments with clinical study findings; successful FDA submission for new pacing lead indication</li>
     </ul>
     <h3 class="etitle-sub">Assert IQ — Insertable Cardiac Monitor</h3>
     <p class="esub">Spearheaded end-to-end systems integration, verification, FDA 510(k) submission, and launch of Abbott's next-gen Assert IQ ICM.</p>
@@ -914,22 +918,22 @@ footer span{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.
     <div class="sk-tags">
       <span class="sk-tag">Python</span>
       <span class="sk-tag">MATLAB</span>
-      <span class="sk-tag">Machine Learning</span>
-      <span class="sk-tag">Deep Learning</span>
-      <span class="sk-tag">Signal &amp; Image Processing</span>
+      <span class="sk-tag">Machine learning</span>
+      <span class="sk-tag">Deep learning</span>
+      <span class="sk-tag">Signal &amp; image processing</span>
       <span class="sk-tag">CAD (SolidWorks &amp; Fusion)</span>
-      <span class="sk-tag">Computational Modeling</span>
-      <span class="sk-tag">Data Analysis &amp; Visualization</span>
+      <span class="sk-tag">Computational modeling</span>
+      <span class="sk-tag">Data analysis &amp; visualization</span>
     </div>
   </div>
   <div class="sk-row">
     <span class="sk-label">Design &amp; Fabrication</span>
     <div class="sk-tags">
-      <span class="sk-tag">3D Printing</span>
-      <span class="sk-tag">Laser Cutting</span>
-      <span class="sk-tag">Electrical Lab Equipment</span>
-      <span class="sk-tag">UI/UX Design</span>
-      <span class="sk-tag">Product Design</span>
+      <span class="sk-tag">3D printing</span>
+      <span class="sk-tag">Laser cutting</span>
+      <span class="sk-tag">Electrical lab equipment</span>
+      <span class="sk-tag">UI/UX design</span>
+      <span class="sk-tag">Product design</span>
     </div>
   </div>
 </div>
@@ -951,7 +955,7 @@ footer span{font-family:'Geist Mono',monospace;font-size:.58rem;letter-spacing:.
 
 <footer>
   <span>Brian Ross · <a href="mailto:bhross@stanford.edu" style="color:inherit;text-decoration:none">bhross@stanford.edu</a> · <a href="https://www.linkedin.com/in/brian-ross-2021/" target="_blank" style="color:inherit;text-decoration:none">LinkedIn</a></span>
-  <span>© 2025</span>
+  <span>© 2026</span>
 </footer>
 
 <script>
@@ -960,4 +964,12 @@ document.documentElement.classList.add('js-reveal');
 const revealEls = document.querySelectorAll('.reveal');
 if ('IntersectionObserver' in window) {
   const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.12});
+  revealEls.forEach(el => io.observe(el));
+} else {
+  revealEls.forEach(el => el.classList.add('in'));
+}
+</script>
+</body>
+</html>
